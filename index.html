@@ -158,60 +158,33 @@
 		}
 		
 		function slidingDoorLeft() {
-			var
-				front = $(buff[visibleBuff]),
-				back = $(buff[1-visibleBuff]),
-				duration = 3000
-			;
-			
-			front.animate(
-				{left: '-' + frameWidth + 'px'}, 
-				duration,
-				'easeOutQuad',
-				afterTransition
-			); // 100% works?
+			slidingDoor(true, -1);
 		}
 		
 		function slidingDoorRight() {
-			var
-				front = $(buff[visibleBuff]),
-				back = $(buff[1-visibleBuff]),
-				duration = 3000
-			;
-			
-			front.animate(
-				{left: '+' + frameWidth + 'px'}, 
-				//{right: '-' + frameWidth + 'px'}, 
-				duration,
-				'easeOutQuad',
-				afterTransition
-			); // 100% works?
+			slidingDoor(true, 1);
 		}
 		
 		function slidingDoorTop() {
-			var
-				front = $(buff[visibleBuff]),
-				back = $(buff[1-visibleBuff]),
-				duration = 3000
-			;
-			
-			front.animate(
-				{top: '-' + frameHeight + 'px'}, 
-				duration,
-				'easeOutQuad',
-				afterTransition
-			); // 100% works?
+			slidingDoor(false, -1);
 		}
 		
 		function slidingDoorBottom() {
+			slidingDoor(false, 1);
+		}
+		
+		function slidingDoor(horiz, sgn) {
 			var
 				front = $(buff[visibleBuff]),
 				back = $(buff[1-visibleBuff]),
-				duration = 3000
+				duration = 3000,
+				prop = {}
 			;
 			
+			prop[horiz ? 'left' : 'top'] = sgn * (horiz ? frameWidth : frameHeight) + 'px';
+			
 			front.animate(
-				{top: '+' + frameHeight + 'px'}, 
+				prop,
 				duration,
 				'easeOutQuad',
 				afterTransition
