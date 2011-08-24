@@ -46,6 +46,7 @@
 		button {
 			padding: 5px;
 		}
+		/*
 		button.transition {
 			background-color: #000;
 			color: orange;
@@ -53,15 +54,18 @@
 			font-family: monospace;
 			border-radius: 5px;
 		}
+		*/
 	</style>
 </head>
 <body>
 	<div id="page-wrap">
 		<div id="slideshow"></div>
-		<button class="transition">slidingDoorLeft</button>
-		<button class="transition">slidingDoorRight</button>
-		<button class="transition">slidingDoorTop</button>
-		<button class="transition">slidingDoorBottm</button>
+		<div id="transition-btns">
+			<button>slidingDoorLeft</button>
+			<button>slidingDoorRight</button>
+			<button>slidingDoorTop</button>
+			<button>slidingDoorBottm</button>
+		</div>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -78,23 +82,21 @@
 			],
 			backIndex = 1,
 			frontIndex = 2,
-			transBtn = $('#trans-btn')
+			transBtns = $('#transition-btns button')
 		;
 		
 		preloadImages();
 		
-		$('button.transition').click(function() {
-			var 
-				btn = $(this),
-				transName = btn.text()
-			;
-			console.log('Disable ' + transName + ' button');
+		$('#transition-btns').delegate('button', 'click', function() {
+			var transName = $(this).text();
+			transBtns.attr('disabled', 'disabled');
 			if (window[transName])
 				window[transName]();
 		});
 		
 		slideshow.bind('afterTransition', function() {
-			console.log('enable btn');
+			//transBtns.attr('disabled', '');
+			transBtns.removeAttr('disabled');
 		});
 		
 		// Functions
