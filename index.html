@@ -89,9 +89,10 @@
 		
 		$('#transition-btns').delegate('button', 'click', function() {
 			var transName = $(this).text();
-			transBtns.attr('disabled', 'disabled');
-			if (window[transName])
+			if (window[transName]) {
+				transBtns.attr('disabled', 'disabled');
 				window[transName]();
+			}
 		});
 		
 		slideshow.bind('afterTransition', function() {
