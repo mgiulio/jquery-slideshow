@@ -75,14 +75,15 @@
 		var
 			slideshow = $('#slideshow'),
 			buff = [new Image(), new Image()],
-			visibleBuff
+			visibleBuff,
 			images = [
 				'fractal-e2.jpg',
 				'fractal-e9.jpg'
 			],
 			backIndex = 1,
 			frontIndex = 2,
-			transBtns = $('#transition-btns button')
+			transBtns = $('#transition-btns button'),
+			frameWidth, frameHeight
 		;
 		
 		preloadImages();
@@ -124,6 +125,9 @@
 				overflow: 'hidden'
 			});
 			
+			frameWidth = slideshow.width();
+			frameHeight = slideshow.height();
+			
 			$(buff[0])
 				.css({
 					position: 'absolute',
@@ -132,6 +136,8 @@
 					zIndex: backIndex
 				})
 				.attr('src', images[0])
+				.width(frameWidth)
+				.height(frameHeight)
 			;
 			
 			$(buff[1])
@@ -142,6 +148,8 @@
 					zIndex: frontIndex
 				})
 				.attr('src', images[1])
+				.width(frameWidth)
+				.height(frameHeight)
 			;
 			
 			slideshow.append(buff[0], buff[1]);
@@ -149,11 +157,6 @@
 			visibleBuff = 1;
 		}
 		
-		/*
-			A transition assumes that:
-			- current visbile image is in buff[visibleBuff]
-			- next(hidden) images in in buff[1-visibleBuff]	
-		*/
 		function slidingDoorLeft() {
 			var
 				front = $(buff[visibleBuff]),
@@ -162,7 +165,7 @@
 			;
 			
 			front.animate(
-				{left: '-' + front.width() + 'px'}, 
+				{left: '-' + frameWidth + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
@@ -177,7 +180,8 @@
 			;
 			
 			front.animate(
-				{left: slideshow.width() + 'px'}, 
+				{left: '+' + frameWidth + 'px'}, 
+				//{right: '-' + frameWidth + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
@@ -192,7 +196,7 @@
 			;
 			
 			front.animate(
-				{top: '-' + front.height() + 'px'}, 
+				{top: '-' + frameHeight + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
@@ -207,7 +211,7 @@
 			;
 			
 			front.animate(
-				{top: '+' + slideshow.height() + 'px'}, 
+				{top: '+' + frameHeight + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
