@@ -48,7 +48,7 @@
 <body>
 	<div id="page-wrap">
 		<div id="slideshow"></div>
-		<button id="trans">Transition</button>
+		<button id="trans-btn">Transition</button>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -64,16 +64,19 @@
 				'fractal-e9.jpg'
 			],
 			backIndex = 1,
-			frontIndex = 2
+			frontIndex = 2,
+			transBtn = $('#trans-btn')
 		;
 		
 		preloadImages();
 		
-		$('#trans').click(function() {
-			// disble me
-			slidingDoorLeft(function() {
-				//enable me
-			});
+		transBtn.click(function() {
+			console.log('disable btn');
+			slidingDoorLeft();
+		});
+		
+		slideshow.bind('afterTransition', function() {
+			console.log('enable btn');
 		});
 		
 		// Functions
@@ -146,12 +149,20 @@
 		}
 		
 		function afterTransition() {
-			back.css({
-				left: 0,
-				top: 0,
-				zIndex: backIndex
+			$(buff[1-visibleBuff]).css({zIndex: frontIndex});
+			
+			$(buff[visibleBuff])
+				.css({
+					zIndex: backIndex
+				})
+				.css({
+					left: 0,
+					top: 0
 			});
+			
 			visibleBuff = 1 - visibleBuff;
+			
+			slideshow.trigger('afterTransition');
 		}
 	</script>
 </body>
