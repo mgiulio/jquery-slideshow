@@ -64,7 +64,7 @@
 			<button>slidingDoorLeft</button>
 			<button>slidingDoorRight</button>
 			<button>slidingDoorTop</button>
-			<button>slidingDoorBottm</button>
+			<button>slidingDoorBottom</button>
 		</div>
 	</div>
 	
@@ -178,6 +178,36 @@
 			
 			front.animate(
 				{left: slideshow.width() + 'px'}, 
+				duration,
+				'easeOutQuad',
+				afterTransition
+			); // 100% works?
+		}
+		
+		function slidingDoorTop() {
+			var
+				front = $(buff[visibleBuff]),
+				back = $(buff[1-visibleBuff]),
+				duration = 3000
+			;
+			
+			front.animate(
+				{top: '-' + front.height() + 'px'}, 
+				duration,
+				'easeOutQuad',
+				afterTransition
+			); // 100% works?
+		}
+		
+		function slidingDoorBottom() {
+			var
+				front = $(buff[visibleBuff]),
+				back = $(buff[1-visibleBuff]),
+				duration = 3000
+			;
+			
+			front.animate(
+				{top: '+' + slideshow.height() + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
