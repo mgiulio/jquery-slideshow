@@ -18,7 +18,7 @@
 		#page-wrap {
 			width: 720px;
 			margin: 0 auto;
-			background-color: #fff;
+			background-color: #ddd;
 			border: 2px solid #999;
 			padding: 20px;
 			margin-top: 80px;
@@ -26,7 +26,7 @@
 		#slideshow {
 			width: 500px;
 			height: 250px;
-			margin: 0 auto;
+			margin: 80px auto;
 			border: 1px solid #aaa;
 			background-color: #444
 		}
@@ -43,12 +43,25 @@
 		a:active{
 			color: #ffff00;
 		}
+		button {
+			padding: 5px;
+		}
+		button.transition {
+			background-color: #000;
+			color: orange;
+			font-weight: bold;
+			font-family: monospace;
+			border-radius: 5px;
+		}
 	</style>
 </head>
 <body>
 	<div id="page-wrap">
 		<div id="slideshow"></div>
-		<button id="trans-btn">Transition</button>
+		<button class="transition">slidingDoorLeft</button>
+		<button class="transition">slidingDoorRight</button>
+		<button class="transition">slidingDoorTop</button>
+		<button class="transition">slidingDoorBottm</button>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -70,9 +83,14 @@
 		
 		preloadImages();
 		
-		transBtn.click(function() {
-			console.log('disable btn');
-			slidingDoorLeft();
+		$('button.transition').click(function() {
+			var 
+				btn = $(this),
+				transName = btn.text()
+			;
+			console.log('Disable ' + transName + ' button');
+			if (window[transName])
+				window[transName]();
 		});
 		
 		slideshow.bind('afterTransition', function() {
@@ -133,7 +151,7 @@
 			- current visbile image is in buff[visibleBuff]
 			- next(hidden) images in in buff[1-visibleBuff]	
 		*/
-		function slidingDoorLeft(done) {
+		function slidingDoorLeft() {
 			var
 				front = $(buff[visibleBuff]),
 				back = $(buff[1-visibleBuff]),
@@ -141,7 +159,22 @@
 			;
 			
 			front.animate(
-				{left: '-' + front.width()}, 
+				{left: '-' + front.width() + 'px'}, 
+				duration,
+				'easeOutQuad',
+				afterTransition
+			); // 100% works?
+		}
+		
+		function slidingDoorRight() {
+			var
+				front = $(buff[visibleBuff]),
+				back = $(buff[1-visibleBuff]),
+				duration = 3000
+			;
+			
+			front.animate(
+				{left: slideshow.width() + 'px'}, 
 				duration,
 				'easeOutQuad',
 				afterTransition
