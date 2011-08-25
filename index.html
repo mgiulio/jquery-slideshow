@@ -60,12 +60,14 @@
 <body>
 	<div id="page-wrap">
 		<div id="slideshow"></div>
-		<div id="transition-btns">
-			<button>slidingDoorLeft</button>
-			<button>slidingDoorRight</button>
-			<button>slidingDoorTop</button>
-			<button>slidingDoorBottom</button>
-		</div>
+
+		<fieldset id="sliding-door">
+			<legend>sliding door</legend>
+			<button>left</button>
+			<button>right</button>
+			<button>top</button>
+			<button>bottom</button>
+		</fieldset>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -82,23 +84,20 @@
 			],
 			backIndex = 1,
 			frontIndex = 2,
-			transBtns = $('#transition-btns button'),
+			//transBtns = $('#sliding-door button'),
 			frameWidth, frameHeight
 		;
 		
 		preloadImages();
 		
-		$('#transition-btns').delegate('button', 'click', function() {
-			var transName = $(this).text();
-			if (window[transName]) {
-				transBtns.attr('disabled', 'disabled');
-				window[transName]();
-			}
+		$('#sliding-door').delegate('button', 'click', function() {
+			//transBtns.attr('disabled', 'disabled');
+			slidingDoor($(this).text());
 		});
 		
 		slideshow.bind('afterTransition', function() {
 			//transBtns.attr('disabled', '');
-			transBtns.removeAttr('disabled');
+			//transBtns.removeAttr('disabled');
 		});
 		
 		// Functions
@@ -157,31 +156,40 @@
 			visibleBuff = 1;
 		}
 		
-		function slidingDoorLeft() {
-			slidingDoor(true, -1);
-		}
-		
-		function slidingDoorRight() {
-			slidingDoor(true, 1);
-		}
-		
-		function slidingDoorTop() {
-			slidingDoor(false, -1);
-		}
-		
-		function slidingDoorBottom() {
-			slidingDoor(false, 1);
-		}
-		
-		function slidingDoor(horiz, sgn) {
+		function slidingDoor(dir) {
 			var
 				front = $(buff[visibleBuff]),
 				back = $(buff[1-visibleBuff]),
 				duration = 3000,
-				prop = {}
+				prop = {},
+				axis,
+				sgn,
+				offset
 			;
+			switch (dir) {
+				case 'top':
+					axis = 'top';
+					sgn = -1;
+					offset = frameHeight;
+					break;
+				case 'right':
+					axis = 'left';
+					sgn = 1;
+					offset = frameWidth;
+					break;
+				case 'bottom':
+					axis = 'top';
+					sgn = 1;
+					offset = frameHeight;
+					break;
+				case 'left':
+					axis = 'left';
+					sgn = -1;
+					offset = frameWidth;
+					break;
+			}
 			
-			prop[horiz ? 'left' : 'top'] = sgn * (horiz ? frameWidth : frameHeight) + 'px';
+			prop[axis] = sgn * offset + 'px';
 			
 			front.animate(
 				prop,
