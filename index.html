@@ -61,13 +61,15 @@
 	<div id="page-wrap">
 		<div id="slideshow"></div>
 
-		<fieldset id="sliding-door">
-			<legend>sliding door</legend>
-			<button>left</button>
-			<button>right</button>
-			<button>top</button>
-			<button>bottom</button>
-		</fieldset>
+		<div id="gui">
+			<fieldset id="sliding-door">
+				<legend>sliding door</legend>
+				<button>left</button>
+				<button>right</button>
+				<button>top</button>
+				<button>bottom</button>
+			</fieldset>
+		</div>
 	</div>
 	
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
@@ -85,19 +87,21 @@
 			backIndex = 1,
 			frontIndex = 2,
 			//transBtns = $('#sliding-door button'),
-			frameWidth, frameHeight
+			frameWidth, frameHeight,
+			guiElems = $('#gui button')
 		;
 		
 		preloadImages();
 		
-		$('#sliding-door').delegate('button', 'click', function() {
-			//transBtns.attr('disabled', 'disabled');
+		$('#sliding-door').delegate('button', 'click', function(e) {
+			guiElems.attr('disabled', 'disabled');
 			slidingDoor($(this).text());
+			e.stopPropagation();
 		});
 		
 		slideshow.bind('afterTransition', function() {
 			//transBtns.attr('disabled', '');
-			//transBtns.removeAttr('disabled');
+			guiElems.removeAttr('disabled');
 		});
 		
 		// Functions
