@@ -69,6 +69,12 @@
 				<button>top</button>
 				<button>bottom</button>
 			</fieldset>
+			
+			<fieldset id="sliding-doors">
+				<legend>sliding doors</legend>
+				<button>horizontal</button>
+				<button>vertical</button>
+			</fieldset>
 		</div>
 	</div>
 	
@@ -93,10 +99,17 @@
 		
 		preloadImages();
 		
-		$('#sliding-door').delegate('button', 'click', function(e) {
+		$('#gui').delegate('button', 'click', function(e) {
 			guiElems.attr('disabled', 'disabled');
-			slidingDoor($(this).text());
 			e.stopPropagation();
+		});
+		
+		$('#sliding-door').delegate('button', 'click', function(e) {
+			slidingDoor($(this).text());
+		});
+		
+		$('#sliding-doors').delegate('button', 'click', function(e) {
+			slidingDoors($(this).text());
 		});
 		
 		slideshow.bind('afterTransition', function() {
@@ -203,9 +216,66 @@
 			); // 100% works?
 		}
 		
+		function slidingDoors(axis) {
+			var
+				front = $(buff[visibleBuff]),
+				back = $(buff[1-visibleBuff]),
+				duration = 3000,
+				leftDoor = $('<div class="left-door"></div>'),
+				rightDoor = $('<div class="right-door"></div>'),
+				doorWidth = frameWidth / 2,
+				zIndex = front.css('zIndex')
+			;
+
+			// Seup doors
+			leftDoor.css({
+				position: 'absolute',
+				width: doorWidth + 'px',
+				height: frameHeight,
+				left: 0,
+				top: 0,
+				backgroundImage: 'url(' + front.attr('src') + ')',
+				backgroundPosition: 'left top',
+				zIndex: zIndex
+			});
+			rightDoor.css({
+				position: 'absolute',
+				width: doorWidth + 'px',
+				height: frameHeight,
+				right: 0,
+				top: 0,
+				backgroundImage: 'url(' + front.attr('src') + ')',
+				backgroundPosition: 'right top',
+				zIndex: zIndex
+			});
+			
+			slideshow.append(leftDoor, rightDoor);
+			front.hide();
+			
+			$.when(
+				leftDoor.animate(
+					{left: -doorWidth + 'px'},
+					duration,
+					'easeOutQuad'
+				),
+				rightDoor.animate(
+					{right: -doorWidth + 'px'},
+					duration,
+					'easeOutQuad'
+				)
+			).then(function() {
+				leftDoor.remove();
+				rightDoor.remove();
+				afterTransition();
+			});
+		}
+		
+		// Called by every transition to set the stage for the next one
 		function afterTransition() {
+			// Adjust the new front buffer
 			$(buff[1-visibleBuff]).css({zIndex: frontIndex});
 			
+			// Adjust the new back buffer
 			$(buff[visibleBuff])
 				.css({
 					zIndex: backIndex
@@ -213,7 +283,9 @@
 				.css({
 					left: 0,
 					top: 0
-			});
+				})
+				.show()
+			;
 			
 			visibleBuff = 1 - visibleBuff;
 			
