@@ -82,7 +82,7 @@
 	<script>
 		var
 			slideshow = $('#slideshow'),
-			buff = [new Image(), new Image()],
+			buff = [$(new Image()), $(new Image())],
 			visibleBuff,
 			images = [
 				'fractal-e2.jpg',
@@ -144,7 +144,7 @@
 			frameWidth = slideshow.width();
 			frameHeight = slideshow.height();
 			
-			$(buff[0])
+			buff[0]
 				.css({
 					position: 'absolute',
 					left: 0,
@@ -156,7 +156,7 @@
 				//.height(frameHeight)
 			;
 			
-			$(buff[1])
+			buff[1]
 				.css({
 					position: 'absolute',
 					left: 0,
@@ -175,8 +175,8 @@
 		
 		function slidingDoor(dir) {
 			var
-				front = $(buff[visibleBuff]),
-				back = $(buff[1-visibleBuff]),
+				front = buff[visibleBuff],
+				back = buff[1-visibleBuff],
 				duration = 3000,
 				prop = {},
 				axis,
@@ -218,8 +218,8 @@
 		
 		function slidingDoors(axis) {
 			var
-				front = $(buff[visibleBuff]),
-				back = $(buff[1-visibleBuff]),
+				front = buff[visibleBuff],
+				back = buff[1-visibleBuff],
 				duration = 3000,
 				zIndex = front.css('zIndex'),
 				doorCss = {
@@ -304,10 +304,10 @@
 		// Called by every transition to set the stage for the next one
 		function afterTransition() {
 			// Adjust the new front buffer
-			$(buff[1-visibleBuff]).css({zIndex: frontIndex});
+			buff[1-visibleBuff].css({zIndex: frontIndex});
 			
 			// Adjust the new back buffer
-			$(buff[visibleBuff])
+			buff[visibleBuff]
 				.css({
 					zIndex: backIndex
 				})
