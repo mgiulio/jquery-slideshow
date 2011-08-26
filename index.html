@@ -94,28 +94,10 @@
 			frameWidth, frameHeight,
 			guiElems = $('#gui button')
 		;
-		
+
+		$(document).bind('imagesLoaded', initSlideshow);
 		preloadImages();
-		
-		$('#gui').delegate('button', 'click', function(e) {
-			guiElems.attr('disabled', 'disabled');
-			e.stopPropagation();
-		});
-		
-		$('#sliding-door').delegate('button', 'click', function(e) {
-			slidingDoor($(this).text());
-		});
-		
-		$('#sliding-doors').delegate('button', 'click', function(e) {
-			slidingDoors($(this).text());
-		});
-		
-		slideshow.bind('afterTransition', function() {
-			//transBtns.attr('disabled', '');
-			guiElems.removeAttr('disabled');
-		});
-		
-		// Functions
+		initGUI();
 		
 		function preloadImages() {
 			var
@@ -127,10 +109,30 @@
 				img = new Image();
 				img.onload = function() {
 					if (--count === 0)
-						initSlideshow();
+						$(document).trigger('imagesLoaded');
 				};
 				img.src = images[i];
 			}
+		}
+		
+		function initGUI() {
+			$('#gui').delegate('button', 'click', function(e) {
+				guiElems.attr('disabled', 'disabled');
+				e.stopPropagation();
+			});
+			
+			$('#sliding-door').delegate('button', 'click', function(e) {
+				slidingDoor($(this).text());
+			});
+			
+			$('#sliding-doors').delegate('button', 'click', function(e) {
+				slidingDoors($(this).text());
+			});
+			
+			slideshow.bind('afterTransition', function() {
+				//transBtns.attr('disabled', '');
+				guiElems.removeAttr('disabled');
+			});
 		}
 		
 		function initSlideshow() {
