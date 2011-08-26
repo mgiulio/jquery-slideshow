@@ -82,6 +82,9 @@
 	<script>!window.jQuery && document.write('<script src="http://code.jquery.com/jquery-1.6.2.min.js"><\/script>');</script>
 	<script src="jquery.easing.1.3.js"></script>
 	<script src="slideshow.js"></script>
+	<script src="none.js"></script>
+	<script src="sliding-door.js"></script>
+	<script src="sliding-doors.js"></script>
 	<script>
 			images = [
 				'fractal-e2.jpg',
@@ -123,15 +126,15 @@
 			});
 			
 			$('#sliding-door').delegate('button', 'click', function(e) {
-				slidingDoor($(this).text());
+				transitions.slidingDoor($(this).text());
 			});
 			
 			$('#sliding-doors').delegate('button', 'click', function(e) {
-				slidingDoors($(this).text());
+				transitions.slidingDoors($(this).text());
 			});
 			
 			$('#none').click(function() {
-				none();
+				transitions.none();
 				return false;
 			});
 		}
