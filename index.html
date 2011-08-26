@@ -219,51 +219,82 @@
 				front = $(buff[visibleBuff]),
 				back = $(buff[1-visibleBuff]),
 				duration = 3000,
-				leftDoor = $('<div class="left-door"></div>'),
-				rightDoor = $('<div class="right-door"></div>'),
-				doorWidth = frameWidth / 2,
-				zIndex = front.css('zIndex')
+				zIndex = front.css('zIndex'),
+				doorCss = {
+					position: 'absolute',
+					backgroundImage: 'url(' + front.attr('src') + ')',
+					zIndex: zIndex
+				},
+				doors = [
+					{
+						node: $('<div class="left-door"></div>'), // FIXME
+						css: $.extend({}, doorCss, axis === 'horizontal' ?
+							{
+								width: frameWidth / 2 + 'px',
+								height: frameHeight + 'px',
+								left: 0,
+								top: 0,
+								backgroundPosition: 'left top'
+							}
+							:
+							{
+								width: frameWidth + 'px',
+								height:  frameHeight / 2 + 'px',
+								left: 0,
+								top: 0,
+								backgroundPosition: 'left top'
+							}),
+						animCss: axis === 'horizontal' ? 
+							{left: -frameWidth/2 + 'px'} :
+							{top: -frameHeight + 'px'}
+					},
+					{
+						node: $('<div class="right-door"></div>'), //FIXME
+						css: $.extend({}, doorCss, axis === 'horizontal' ?
+							{
+								width: frameWidth / 2 + 'px',
+								height: frameHeight + 'px',
+								right: 0,
+								top: 0,
+								backgroundPosition: 'right top'
+							}
+							:
+							{
+								width: frameWidth + 'px',
+								height:  frameHeight / 2 + 'px',
+								left: 0,
+								bottom: 0,
+								backgroundPosition: 'left bottom'
+							}),
+						animCss: axis === 'horizontal' ? 
+							{right: -frameWidth/2 + 'px'} :
+							{bottom: -frameHeight + 'px'}
+					}
+				],
+				d0 = doors[0],
+				d1 = doors[1]
 			;
-
-			// Seup doors
-			leftDoor.css({
-				position: 'absolute',
-				width: doorWidth + 'px',
-				height: frameHeight,
-				left: 0,
-				top: 0,
-				backgroundImage: 'url(' + front.attr('src') + ')',
-				backgroundPosition: 'left top',
-				zIndex: zIndex
-			});
-			rightDoor.css({
-				position: 'absolute',
-				width: doorWidth + 'px',
-				height: frameHeight,
-				right: 0,
-				top: 0,
-				backgroundImage: 'url(' + front.attr('src') + ')',
-				backgroundPosition: 'right top',
-				zIndex: zIndex
-			});
 			
-			slideshow.append(leftDoor, rightDoor);
+			slideshow.append(
+				d0.node.css(d0.css),
+				d1.node.css(d1.css)
+			);
 			front.hide();
-			
+
 			$.when(
-				leftDoor.animate(
-					{left: -doorWidth + 'px'},
+				d0.node.animate(
+					d0.animCss,
 					duration,
 					'easeOutQuad'
 				),
-				rightDoor.animate(
-					{right: -doorWidth + 'px'},
+				d1.node.animate(
+					d1.animCss,
 					duration,
 					'easeOutQuad'
 				)
 			).then(function() {
-				leftDoor.remove();
-				rightDoor.remove();
+				d0.node.remove();
+				d1.node.remove();
 				afterTransition();
 			});
 		}
