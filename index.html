@@ -73,6 +73,8 @@
 				<button>horizontal</button>
 				<button>vertical</button>
 			</fieldset>
+			
+			<button id="none">none</button>
 		</div>
 	</div>
 	
@@ -116,6 +118,11 @@
 		}
 		
 		function initGUI() {
+			slideshow.bind('afterTransition', function() {
+				//transBtns.attr('disabled', '');
+				guiElems.removeAttr('disabled');
+			});
+			
 			$('#gui').delegate('button', 'click', function(e) {
 				guiElems.attr('disabled', 'disabled');
 				e.stopPropagation();
@@ -129,9 +136,9 @@
 				slidingDoors($(this).text());
 			});
 			
-			slideshow.bind('afterTransition', function() {
-				//transBtns.attr('disabled', '');
-				guiElems.removeAttr('disabled');
+			$('#none').click(function() {
+				none();
+				return false;
 			});
 		}
 		
@@ -299,6 +306,10 @@
 				d1.node.remove();
 				afterTransition();
 			});
+		}
+		
+		function none() {
+			afterTransition();
 		}
 		
 		// Called by every transition to set the stage for the next one
