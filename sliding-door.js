@@ -2,30 +2,23 @@
 
 transitions['sliding door'] = Object.create(transition, {
 	play: {
-		value: Modernizr.csstransitions ? css3Transitions : jQueryAnimate
+		value: $.support['transitionProperty'] ? css3Transitions : jQueryAnimate
 	}
 });
 
 function css3Transitions(dir, done) {
 	this.front
 		.css({
-			'-webkit-transition-property': 'left',
-			'-webkit-transition-duration': this.duration + 'ms',
+			'transition-property': 'left',
+			'transition-duration': this.duration + 'ms',
 		})
 		.css('left', -this.frameWidth +'px')
 	;
 	
 	this.front.bind('webkitTransitionEnd', function() {
-		$(this).css('-webkit-transition-property', 'none');
+		$(this).css('transition-property', 'none');
 		done();
 	});
-	
-	/* -moz-transition-property: padding;
-			-moz-transition-duration: 250ms;
-			-o-transition-property: padding;
-			-o-transition-duration: 250ms;
-			transition-property: padding;
-			transition-duration: 250ms; */
 }
 
 function jQueryAnimate(dir, done) {
@@ -35,6 +28,8 @@ function jQueryAnimate(dir, done) {
 		sgn,
 		offset
 	;
+	
+	dir = 'left'; // TODO
 	
 	switch (dir) {
 		case 'top':
