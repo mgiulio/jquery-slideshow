@@ -74,6 +74,12 @@
 				<button>vertical</button>
 			</fieldset>
 			
+			<fieldset id="slide">
+				<legend>slide</legend>
+				<button>left</button>
+				<button>right</button>
+			</fieldset>
+			
 			<button id="none">none</button>
 			<button id="cross-fade">cross fade</button>
 		</div>
@@ -87,6 +93,7 @@
 	<script src="sliding-door.js"></script>
 	<script src="sliding-doors.js"></script>
 	<script src="cross-fade.js"></script>
+	<script src="slide.js"></script>
 	<script>
 			images = [
 				'fractal-e2.jpg',
@@ -119,6 +126,7 @@
 		function initGUI() {
 			slideshow.bind('afterTransition', function() {
 				//transBtns.attr('disabled', '');
+				console.log('afterTransition');
 				guiElems.removeAttr('disabled');
 			});
 			
@@ -133,6 +141,10 @@
 			
 			$('#sliding-doors').delegate('button', 'click', function(e) {
 				transitions.slidingDoors($(this).text());
+			});
+			
+			$('#slide').delegate('button', 'click', function(e) {
+				transitions.slide($(this).text());
 			});
 			
 			$('#none').click(function() {
