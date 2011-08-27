@@ -1,7 +1,37 @@
-transitions.slidingDoor = function(dir) {
+(function() {
+
+transitions['slidingDoor'] = css3Transitions;
+
+function css3Transitions(dir) {
 	var
 		front = buff[visibleBuff],
-		back = buff[1-visibleBuff],
+		duration = 3000
+	;
+	
+	front
+		.css({
+			'-webkit-transition-property': 'left',
+			'-webkit-transition-duration': duration + 'ms',
+		})
+		.css('left', -frameWidth +'px')
+	;
+	
+	front.bind('webkitTransitionEnd', function() {
+		front.css('-webkit-transition-property', 'none');
+		transitions._afterTransition();
+	});
+	
+	/* -moz-transition-property: padding;
+			-moz-transition-duration: 250ms;
+			-o-transition-property: padding;
+			-o-transition-duration: 250ms;
+			transition-property: padding;
+			transition-duration: 250ms; */
+}
+
+function jQueryAnimate(dir) {
+	var
+		front = buff[visibleBuff],
 		duration = 3000,
 		prop = {},
 		axis,
@@ -38,7 +68,7 @@ transitions.slidingDoor = function(dir) {
 		duration,
 		'easeOutQuad',
 		transitions._afterTransition
-	); // 100% works?
-};
-	
-	
+	);
+}
+		
+})();
