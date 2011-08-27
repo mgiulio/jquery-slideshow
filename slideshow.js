@@ -5,28 +5,8 @@ var
 	backIndex = 1,
 	frontIndex = 2,
 	frameWidth, frameHeight,
-	transitions = {
-		_afterTransition: function () { // Called by every transition to set the stage for the next one
-			// Adjust the new front buffer
-			buff[1-visibleBuff].css({zIndex: frontIndex});
-			
-			// Adjust the new back buffer
-			buff[visibleBuff]
-				.css({
-					zIndex: backIndex
-				})
-				.css({
-					left: 0,
-					top: 0
-				})
-				.show()
-			;
-			
-			visibleBuff = 1 - visibleBuff;
-			
-			slideshow.trigger('afterTransition');
-		}
-	}
+	transitions = {},
+	transition = {}
 ;
 
 function initSlideshow() {
@@ -37,6 +17,9 @@ function initSlideshow() {
 	
 	frameWidth = slideshow.width();
 	frameHeight = slideshow.height();
+	
+	transition.frameWidth = frameWidth;
+	transition.frameHeight = frameHeight;
 	
 	buff[0]
 		.css({
@@ -67,3 +50,29 @@ function initSlideshow() {
 	visibleBuff = 1;
 }
 
+function play(transName) {
+	transition.front = buff[visibleBuff];
+	transition.back = buff[1-visibleBuff];
+	transition.duration = 1000;
+	
+	transitions[transName].play('', function() {
+		// Adjust the new front buffer
+		buff[1-visibleBuff].css({zIndex: frontIndex});
+		
+		// Adjust the new back buffer
+		buff[visibleBuff]
+			.css({
+				zIndex: backIndex
+			})
+			.css({
+				left: 0,
+				top: 0
+			})
+			.show()
+		;
+		
+		visibleBuff = 1 - visibleBuff;
+		
+		$('#slideshow').trigger('afterTransition');
+	});
+}

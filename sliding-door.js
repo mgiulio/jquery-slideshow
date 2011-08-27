@@ -1,24 +1,23 @@
 (function() {
 
-transitions['slidingDoor'] = css3Transitions;
+transitions['sliding door'] = Object.create(transition, {
+	play: {
+		value: Modernizr.csstransitions ? css3Transitions : jQueryAnimate
+	}
+});
 
-function css3Transitions(dir) {
-	var
-		front = buff[visibleBuff],
-		duration = 3000
-	;
-	
-	front
+function css3Transitions(dir, done) {
+	this.front
 		.css({
 			'-webkit-transition-property': 'left',
-			'-webkit-transition-duration': duration + 'ms',
+			'-webkit-transition-duration': this.duration + 'ms',
 		})
-		.css('left', -frameWidth +'px')
+		.css('left', -this.frameWidth +'px')
 	;
 	
-	front.bind('webkitTransitionEnd', function() {
-		front.css('-webkit-transition-property', 'none');
-		transitions._afterTransition();
+	this.front.bind('webkitTransitionEnd', function() {
+		$(this).css('-webkit-transition-property', 'none');
+		done();
 	});
 	
 	/* -moz-transition-property: padding;
@@ -29,45 +28,44 @@ function css3Transitions(dir) {
 			transition-duration: 250ms; */
 }
 
-function jQueryAnimate(dir) {
+function jQueryAnimate(dir, done) {
 	var
-		front = buff[visibleBuff],
-		duration = 3000,
 		prop = {},
 		axis,
 		sgn,
 		offset
 	;
+	
 	switch (dir) {
 		case 'top':
 			axis = 'top';
 			sgn = -1;
-			offset = frameHeight;
+			offset = this.frameHeight;
 			break;
 		case 'right':
 			axis = 'left';
 			sgn = 1;
-			offset = frameWidth;
+			offset = this.frameWidth;
 			break;
 		case 'bottom':
 			axis = 'top';
 			sgn = 1;
-			offset = frameHeight;
+			offset = this.frameHeight;
 			break;
 		case 'left':
 			axis = 'left';
 			sgn = -1;
-			offset = frameWidth;
+			offset = this.frameWidth;
 			break;
 	}
 	
 	prop[axis] = sgn * offset + 'px';
 	
-	front.animate(
+	this.front.animate(
 		prop,
-		duration,
+		this.duration,
 		'easeOutQuad',
-		transitions._afterTransition
+		done
 	);
 }
 		
