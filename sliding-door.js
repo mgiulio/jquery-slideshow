@@ -12,7 +12,7 @@ function css3Transitions(dir, done) {
 			'transition-property': 'left',
 			'transition-duration': this.duration + 'ms',
 		})
-		.one('webkitTransitionEnd', function() {
+		.one($.support['transitionend'], function() {
 			$(this).css('transition-property', 'none');
 			done();
 		})

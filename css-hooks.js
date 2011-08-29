@@ -70,6 +70,8 @@ if (transitionDuration && transitionDuration !== 'transitionDuration' )
 			elem.style[transitionDuration] = value;
 		}
 	};
+	
+$.support['transitionend'] = 'webkitTransitionEnd'; // FIXME
 
 // var transition-timing
 
