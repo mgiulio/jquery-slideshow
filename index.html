@@ -138,7 +138,8 @@
 			});
 			
 			$('#sliding-door').delegate('button', 'click', function(e) {
-				play('sliding door');
+				setTransition('sliding door', {dir: $(e.target).text()});
+				play();
 			});
 			
 			$('#sliding-doors').delegate('button', 'click', function(e) {

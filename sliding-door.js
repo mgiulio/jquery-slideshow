@@ -1,12 +1,17 @@
 (function() {
 
-transitions['sliding door'] = Object.create(transition, {
-	play: {
-		value: $.support['transitionProperty'] ? css3Transitions : jQueryAnimate
+transitions['sliding door'] = $.extend(Object.create(transition), {
+	play: $.support['transitionProperty'] ? css3Transitions : jQueryAnimate,
+	dir: 'left',
+	cfg: function(cfg) {
+		if ('dir' in cfg)
+			this.dir = cfg.dir;
 	}
 });
 
-function css3Transitions(dir, done) {
+function css3Transitions() {
+	var self = this;
+	
 	this.front
 		.css({
 			'transition-property': 'left',
@@ -14,23 +19,21 @@ function css3Transitions(dir, done) {
 		})
 		.one($.support['transitionend'], function() {
 			$(this).css('transition-property', 'none');
-			done();
+			self.done();
 		})
 		.css('left', -this.frameWidth +'px')
 	;
 }
 
-function jQueryAnimate(dir, done) {
+function jQueryAnimate() {
 	var
 		prop = {},
 		axis,
 		sgn,
 		offset
 	;
-	
-	dir = 'left'; // TODO
-	
-	switch (dir) {
+
+	switch (this.dir) {
 		case 'top':
 			axis = 'top';
 			sgn = -1;
@@ -59,7 +62,7 @@ function jQueryAnimate(dir, done) {
 		prop,
 		this.duration,
 		'easeOutQuad',
-		done
+		this.done
 	);
 }
 		

@@ -6,7 +6,8 @@ var
 	frontIndex = 2,
 	frameWidth, frameHeight,
 	transitions = {},
-	transition = {}
+	transition = {},
+	currTrans = null
 ;
 
 function initSlideshow() {
@@ -20,6 +21,27 @@ function initSlideshow() {
 	
 	transition.frameWidth = frameWidth;
 	transition.frameHeight = frameHeight;
+	transition.duration = 1000;
+	transition.done = function() {
+		// Adjust the new front buffer
+		buff[1-visibleBuff].css({zIndex: frontIndex});
+		
+		// Adjust the new back buffer
+		buff[visibleBuff]
+			.css({
+				zIndex: backIndex
+			})
+			.css({
+				left: 0,
+				top: 0
+			})
+			.show()
+		;
+		
+		visibleBuff = 1 - visibleBuff;
+		
+		$('#slideshow').trigger('afterTransition');
+	};
 	
 	buff[0]
 		.css({
@@ -50,29 +72,14 @@ function initSlideshow() {
 	visibleBuff = 1;
 }
 
-function play(transName) {
+function setTransition(name, cfg) {
+	currTrans = transitions[name];
+	if (cfg)
+		currTrans.cfg(cfg);
+}
+
+function play() {
 	transition.front = buff[visibleBuff];
 	transition.back = buff[1-visibleBuff];
-	transition.duration = 1000;
-	
-	transitions[transName].play('', function() {
-		// Adjust the new front buffer
-		buff[1-visibleBuff].css({zIndex: frontIndex});
-		
-		// Adjust the new back buffer
-		buff[visibleBuff]
-			.css({
-				zIndex: backIndex
-			})
-			.css({
-				left: 0,
-				top: 0
-			})
-			.show()
-		;
-		
-		visibleBuff = 1 - visibleBuff;
-		
-		$('#slideshow').trigger('afterTransition');
-	});
+	currTrans.play(); 
 }
