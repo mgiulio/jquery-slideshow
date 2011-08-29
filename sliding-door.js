@@ -12,13 +12,12 @@ function css3Transitions(dir, done) {
 			'transition-property': 'left',
 			'transition-duration': this.duration + 'ms',
 		})
+		.one('webkitTransitionEnd', function() {
+			$(this).css('transition-property', 'none');
+			done();
+		})
 		.css('left', -this.frameWidth +'px')
 	;
-	
-	this.front.bind('webkitTransitionEnd', function() {
-		$(this).css('transition-property', 'none');
-		done();
-	});
 }
 
 function jQueryAnimate(dir, done) {
