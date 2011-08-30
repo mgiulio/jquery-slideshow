@@ -1,85 +1,104 @@
-var
-	slideshow = $('#slideshow'),
-	buff = [$(new Image()), $(new Image())],
-	visibleBuff,
-	backIndex = 1,
-	frontIndex = 2,
-	frameWidth, frameHeight,
-	transitions = {},
-	transition = {},
-	currTrans = null
-;
-
-function initSlideshow() {
-	slideshow.css({
-		position: 'relative',
-		overflow: 'hidden'
-	});
+function Slideshow(cfg) {
+	this.node = $(cfg.node);
 	
-	frameWidth = slideshow.width();
-	frameHeight = slideshow.height();
+	this.buff = [$(new Image()), $(new Image())];
 	
-	transition.frameWidth = frameWidth;
-	transition.frameHeight = frameHeight;
-	transition.duration = 1000;
-	transition.done = function() {
-		// Adjust the new front buffer
-		buff[1-visibleBuff].css({zIndex: frontIndex});
+	this.backIndex = 1;
+	this.frontIndex = 2;
+	
+	this.preloadImages(function() {
+		this.node.css({
+			position: 'relative',
+			overflow: 'hidden'
+		});
 		
-		// Adjust the new back buffer
-		buff[visibleBuff]
+		this.frameWidth = this.node.width();
+		this.frameHeight = this.node.height();
+		
+		this.transition.frameWidth = this.frameWidth;
+		this.transition.frameHeight = this.frameHeight;
+		this.transition.duration = 1000;
+		var self = this;
+		this.transition.done = function() {
+			// Adjust the new front buffer
+			self.buff[1-this.visibleBuff].css({zIndex: self.frontIndex});
+			
+			// Adjust the new back buffer
+			self.buff[self.visibleBuff]
+				.css({
+					zIndex: self.backIndex
+				})
+				.css({
+					left: 0,
+					top: 0
+				})
+				.show()
+			;
+			
+			self.visibleBuff = 1 - self.visibleBuff;
+			
+			node.trigger('afterTransition');
+		};
+		
+		this.buff[0]
 			.css({
-				zIndex: backIndex
-			})
-			.css({
+				position: 'absolute',
 				left: 0,
-				top: 0
+				top: 0,
+				zIndex: this.backIndex
 			})
-			.show()
+			.attr('src', this.images[0].src)
+			//.width(frameWidth)
+			//.height(frameHeight)
 		;
 		
-		visibleBuff = 1 - visibleBuff;
+		this.buff[1]
+			.css({
+				position: 'absolute',
+				left: 0,
+				top: 0,
+				zIndex: this.frontIndex
+			})
+			.attr('src', this.images[1].src)
+			//.width(frameWidth)
+			//.height(frameHeight)
+		;
 		
-		$('#slideshow').trigger('afterTransition');
-	};
-	
-	buff[0]
-		.css({
-			position: 'absolute',
-			left: 0,
-			top: 0,
-			zIndex: backIndex
-		})
-		.attr('src', images[0])
-		//.width(frameWidth)
-		//.height(frameHeight)
-	;
-	
-	buff[1]
-		.css({
-			position: 'absolute',
-			left: 0,
-			top: 0,
-			zIndex: frontIndex
-		})
-		.attr('src', images[1])
-		//.width(frameWidth)
-		//.height(frameHeight)
-	;
-	
-	slideshow.append(buff[0], buff[1]);
-	
-	visibleBuff = 1;
+		this.node.append(buff[0], buff[1]);
+		
+		this.visibleBuff = 1;
+		
+		this.currTrans = null
+	});
 }
 
-function setTransition(name, cfg) {
-	currTrans = transitions[name];
-	if (cfg)
-		currTrans.cfg(cfg);
-}
-
-function play() {
-	transition.front = buff[visibleBuff];
-	transition.back = buff[1-visibleBuff];
-	currTrans.play(); 
-}
+$.extend(Slideshow.prototype, {
+	transitions: {
+	},
+	transition = {},
+	setTransition: function(name, cfg) {
+		currTrans = transitions[name];
+		if (cfg)
+			currTrans.cfg(cfg);
+	},
+	play: function() {
+		transition.front = buff[visibleBuff];
+		transition.back = buff[1-visibleBuff];
+		currTrans.play(); 
+	},
+	_preloadImages: function(done) {
+		var count, img;
+		
+		this.images = this.node.find('img');
+		count = images.length;
+		
+		images.each(function(index, element) {
+			img = new Image();
+			img.onload = function() {
+				if (--count === 0)
+					done();
+			};
+			img.src = element.src;
+		});
+	}
+});

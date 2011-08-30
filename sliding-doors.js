@@ -1,4 +1,4 @@
-transitions['sliding doors'] = $.extend(Object.create(transition), {
+Slideshow.prototype.transitions['sliding doors'] = $.extend(Object.create(Slideshow.prototype.transition), {
 	axis: 'horizontal',
 	cfg: function(cfg) {
 		if ('axis' in cfg)
