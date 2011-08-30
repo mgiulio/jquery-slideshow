@@ -91,11 +91,11 @@
 	<script src="css-hooks.js"></script>
 	<script src="jquery.easing.1.3.js"></script>
 	<!-- <script src="none.js"></script> -->
-	<!-- <script src="sliding-doors.js"></script>
-	<script src="cross-fade.js"></script>
-	<script src="slide.js"></script> -->
+	<!-- <script src="cross-fade.js"></script> -->
+	<!-- <script src="slide.js"></script> -->
 	<script src="slideshow.js"></script>
 	<script src="sliding-door.js"></script>
+	<script src="sliding-doors.js"></script>
 	<script>
 			images = [
 				'fractal-e2.jpg',
@@ -143,7 +143,8 @@
 			});
 			
 			$('#sliding-doors').delegate('button', 'click', function(e) {
-				play('sliding doors');
+				setTransition('sliding doors', {axis: $(e.target).text()});
+				play();
 			});
 			
 			$('#slide').delegate('button', 'click', function(e) {
