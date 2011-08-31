@@ -968,26 +968,18 @@ $.widget('mgiulio.slideshow', {
 		},
 		'sliding doors vertical': function() {
 			this.transitions['sliding doors'].call(this, 'vertical');
+		},
+		'cross fade': function() {
+			var self = this;
+			$.when(
+				this.front.fadeOut(this.duration),
+				this.back.fadeIn(this.duration)
+			).done(function() {
+				self._afterTransition();
+			});
 		}
 	}
 });
-
-/*
-transitions['cross fade'] = function() {
-	var
-		front = buff[visibleBuff],
-		back = buff[1-visibleBuff],
-		duration = 3000
-	;
-	
-	$.when(
-		front.fadeOut(duration),
-		back.fadeIn(duration)
-	).done(function() {
-		transitions._afterTransition();
-	});
-};
-*/
 
 /* transitions['slide'] = function(dir) {
 	var

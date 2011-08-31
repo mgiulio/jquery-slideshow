@@ -32,6 +32,7 @@ $('#sliding-doors').delegate('button', 'click', function(e) {
 	return false;
 }); */
 
-/* $('#cross-fade').click(function() {
-	play('cross-fade');
-}); */
+$('#cross-fade').click(function() {
+	ss.slideshow('option', 'transition', 'cross fade');
+	ss.slideshow('play');
+});
