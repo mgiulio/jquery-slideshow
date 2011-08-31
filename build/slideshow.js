@@ -723,171 +723,163 @@ $.support['transitionend'] = 'webkitTransitionEnd'; // FIXME
 })(jQuery);
 
 $.widget('mgiulio.slideshow', {
+	options: {
+		transition: 'sliding door left',
+		duration: 1000
+	},
 	_create: function() {
 		this.buff = [$(new Image()), $(new Image())];
 		this.backIndex = 1;
 		this.frontIndex = 2;
 		
-		this._preloadImages(function() {
-			this.node.css({
-				position: 'relative',
-				overflow: 'hidden'
-			});
-			
-			this.frameWidth = this.node.width();
-			this.frameHeight = this.node.height();
-			
-			this.transition.frameWidth = this.frameWidth;
-			this.transition.frameHeight = this.frameHeight;
-			this.transition.duration = 1000;
-			var self = this;
-			this.transition.done = function() {
-				// Adjust the new front buffer
-				self.buff[1-this.visibleBuff].css({zIndex: self.frontIndex});
-				
-				// Adjust the new back buffer
-				self.buff[self.visibleBuff]
-					.css({
-						zIndex: self.backIndex
-					})
-					.css({
-						left: 0,
-						top: 0
-					})
-					.show()
-				;
-				
-				self.visibleBuff = 1 - self.visibleBuff;
-				
-				node.trigger('afterTransition');
-			};
-			
-			this.buff[0]
-				.css({
-					position: 'absolute',
-					left: 0,
-					top: 0,
-					zIndex: this.backIndex
-				})
-				.attr('src', this.images[0].src)
-				//.width(frameWidth)
-				//.height(frameHeight)
-			;
-			
-			this.buff[1]
-				.css({
-					position: 'absolute',
-					left: 0,
-					top: 0,
-					zIndex: this.frontIndex
-				})
-				.attr('src', this.images[1].src)
-				//.width(frameWidth)
-				//.height(frameHeight)
-			;
-			
-			this.node.append(buff[0], buff[1]);
-			
-			this.visibleBuff = 1;
-			
-			this.currTrans = null
-		});
+		this._preloadImages();
 	},
 	_preloadImages: function(done) {
-		var count, img;
+		var count, img, self = this;
 		
-		this.images = this.node.find('img');
-		count = images.length;
+		this.images = this.element.find('img');
+		count = this.images.length;
 		
-		images.each(function(index, element) {
+		this.images.each(function(index, element) {
 			img = new Image();
 			img.onload = function() {
 				if (--count === 0)
-					done();
+					self._afterImagesLoaded();
 			};
 			img.src = element.src;
 		});
-	}
-});
-
-
-$.extend(Slideshow.prototype, {
-	transitions: {
 	},
-	transition = {},
-	setTransition: function(name, cfg) {
-		currTrans = transitions[name];
-		if (cfg)
-			currTrans.cfg(cfg);
-	},
-	play: function() {
-		transition.front = buff[visibleBuff];
-		transition.back = buff[1-visibleBuff];
-		currTrans.play(); 
-	},
-	
-});
-
-transitions['sliding door'] = $.extend(Object.create(transition), {
-	dir: 'left',
-	cfg: function(cfg) {
-		if ('dir' in cfg)
-			this.dir = cfg.dir;
-	},
-	play: function() {
-		var 
-			self = this,
-			prop = {},
-			axis,
-			sgn,
-			offset
+	_afterImagesLoaded: function() {
+		this.element.css({
+			position: 'relative',
+			overflow: 'hidden'
+		});
+		
+		this.frameWidth = this.element.width();
+		this.frameHeight = this.element.height();
+		
+		this.buff[0]
+			.css({
+				position: 'absolute',
+				left: 0,
+				top: 0,
+				zIndex: this.backIndex
+			})
+			.attr('src', this.images[0].src)
+			//.width(frameWidth)
+			//.height(frameHeight)
 		;
 		
-		switch (this.dir) {
-			case 'top':
-				axis = 'top';
-				sgn = -1;
-				offset = this.frameHeight;
-				break;
-			case 'right':
-				axis = 'left';
-				sgn = 1;
-				offset = this.frameWidth;
-				break;
-			case 'bottom':
-				axis = 'top';
-				sgn = 1;
-				offset = this.frameHeight;
-				break;
-			case 'left':
-				axis = 'left';
-				sgn = -1;
-				offset = this.frameWidth;
-				break;
-		}
+		this.buff[1]
+			.css({
+				position: 'absolute',
+				left: 0,
+				top: 0,
+				zIndex: this.frontIndex
+			})
+			.attr('src', this.images[1].src)
+			//.width(frameWidth)
+			//.height(frameHeight)
+		;
 		
-		prop[axis] = sgn * offset + 'px';
+		this.element.append(this.buff[0], this.buff[1]);
 		
-		if ($.support['transitionProperty']) {
-			this.front
-				.css({
-					'transition-property': axis,
-					'transition-duration': this.duration + 'ms',
-				})
-				.one($.support['transitionend'], function() {
-					$(this).css('transition-property', 'none');
-					self.done();
-				})
-				.css(axis, prop[axis])
+		this.visibleBuff = 1;
+	},
+	play: function() {
+		this.front = this.buff[this.visibleBuff];
+		this.back = this.buff[1-this.visibleBuff];
+		
+		this.transitions[this.options.transition].call(this);
+	},
+	_afterTransition: function() {
+		// Adjust the new front buffer
+		this.buff[1-this.visibleBuff].css({zIndex: this.frontIndex});
+		
+		// Adjust the new back buffer
+		this.buff[this.visibleBuff]
+			.css({
+				zIndex: this.backIndex
+			})
+			.css({
+				left: 0,
+				top: 0
+			})
+			.show()
+		;
+		
+		this.visibleBuff = 1 - this.visibleBuff;
+		
+		this.element.trigger('afterTransition');
+	},
+	transitions: {
+		'sliding door': function(dir) {
+			var 
+				self = this,
+				prop = {},
+				axis,
+				sgn,
+				offset
 			;
+			
+			switch (dir) {
+				case 'top':
+					axis = 'top';
+					sgn = -1;
+					offset = this.frameHeight;
+					break;
+				case 'right':
+					axis = 'left';
+					sgn = 1;
+					offset = this.frameWidth;
+					break;
+				case 'bottom':
+					axis = 'top';
+					sgn = 1;
+					offset = this.frameHeight;
+					break;
+				case 'left':
+					axis = 'left';
+					sgn = -1;
+					offset = this.frameWidth;
+					break;
+			}
+			
+			prop[axis] = sgn * offset + 'px';
+			
+			if ($.support['transitionProperty']) {
+				this.front
+					.css({
+						'transition-property': axis,
+						'transition-duration': this.options.duration + 'ms',
+					})
+					.one($.support['transitionend'], function() {
+						$(this).css('transition-property', 'none');
+						self._afterTransition();
+					})
+					.css(axis, prop[axis])
+				;
+			}
+			else
+				this.front.animate(
+					prop,
+					this.options.duration,
+					'easeOutQuad',
+					function() { self._afterTransition(); }
+				);
+		},
+		'sliding door left': function() {
+			this.transitions['sliding door'].call(this, 'left');
+		},
+		'sliding door right': function() {
+			this.transitions['sliding door'].call(this, 'right');
+		},
+		'sliding door top': function() {
+			this.transitions['sliding door'].call(this, 'top');
+		},
+		'sliding door bottom': function() {
+			this.transitions['sliding door'].call(this, 'bottom');
 		}
-		else
-			this.front.animate(
-				prop,
-				this.duration,
-				'easeOutQuad',
-				this.done
-			);
 	}
 });
 
@@ -908,7 +900,7 @@ transitions['cross fade'] = function() {
 };
 */
 
-transitions['slide'] = function(dir) {
+/* transitions['slide'] = function(dir) {
 	var
 		front = buff[visibleBuff],
 		back = buff[1-visibleBuff],
@@ -954,9 +946,9 @@ transitions['slide'] = function(dir) {
 			break;
 		default:
 	}
-};
+}; */
 	
-Slideshow.prototype.transitions['sliding doors'] = $.extend(Object.create(Slideshow.prototype.transition), {
+/* Slideshow.prototype.transitions['sliding doors'] = $.extend(Object.create(Slideshow.prototype.transition), {
 	axis: 'horizontal',
 	cfg: function(cfg) {
 		if ('axis' in cfg)
@@ -1031,12 +1023,12 @@ Slideshow.prototype.transitions['sliding doors'] = $.extend(Object.create(Slides
 		$.when(
 			d0.node.animate(
 				d0.animCss,
-				this.duration,
+				this.options.duration,
 				'easeOutQuad'
 			),
 			d1.node.animate(
 				d1.animCss,
-				this.duration,
+				this.options.duration,
 				'easeOutQuad'
 			)
 		).then(function() {
@@ -1045,8 +1037,8 @@ Slideshow.prototype.transitions['sliding doors'] = $.extend(Object.create(Slides
 			self.done();
 		});
 	}
-});
+}); */
 
-transitions.none = function() {
+/* transitions.none = function() {
 		this._afterTransition();
-};
+}; */

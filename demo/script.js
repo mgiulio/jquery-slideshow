@@ -14,14 +14,14 @@ $('#gui').delegate('button', 'click', function(e) {
 });
 
 $('#sliding-door').delegate('button', 'click', function(e) {
-	ss.slideshow('option', 'transition', 'sliding door', {dir: $(e.target).text()});
+	ss.slideshow('option', 'transition', 'sliding door ' + $(e.target).text());
 	ss.slideshow('play');
 });
 
-$('#sliding-doors').delegate('button', 'click', function(e) {
-	ss.slideshow('option', 'transition', 'sliding doors', {axis: $(e.target).text()});
+/* $('#sliding-doors').delegate('button', 'click', function(e) {
+	ss.slideshow('option', 'transition', 'sliding doors + $(e.target).text());
 	ss.slideshow('play');
-});
+}); */
 
 /* $('#slide').delegate('button', 'click', function(e) {
 	play('slide');
