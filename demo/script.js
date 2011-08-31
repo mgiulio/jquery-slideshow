@@ -3,7 +3,7 @@ var
 	buttons = $('#gui button')
 ;
 		
-ss.bind('afterTransition', function() {
+ss.bind('slideshowaftertransition', function() {
 	//transBtns.attr('disabled', '');
 	buttons.removeAttr('disabled');
 });

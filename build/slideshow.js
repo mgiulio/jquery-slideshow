@@ -810,7 +810,7 @@ $.widget('mgiulio.slideshow', {
 		
 		this.visibleBuff = 1 - this.visibleBuff;
 		
-		this.element.trigger('afterTransition');
+		this._trigger('afterTransition');
 	},
 	transitions: {
 		'sliding door': function(dir) {
