@@ -867,7 +867,7 @@ $.widget('mgiulio.slideshow', {
 					prop,
 					this.options.duration,
 					'easeOutQuad',
-					function() { self._afterTransition(); }
+					$.proxy(this, '_afterTransition') 
 				);
 		},
 		'sliding door left': function() {
@@ -972,16 +972,12 @@ $.widget('mgiulio.slideshow', {
 			this.transitions['sliding doors'].call(this, 'vertical');
 		},
 		'cross fade': function() {
-			var self = this;
 			$.when(
 				this.front.fadeOut(this.duration),
 				this.back.fadeIn(this.duration)
-			).done(function() {
-				self._afterTransition();
-			});
+			).done($.proxy(this, '_afterTransition'));
 		},
 		'slide': function(dir) {
-			var self = this;
 			switch (dir) {
 				case 'left':
 					this.back.css({
@@ -999,7 +995,7 @@ $.widget('mgiulio.slideshow', {
 							this.duration, 
 							'linear'
 						)
-					).then(function() { self._afterTransition(); });
+					).then($.proxy(this, '_afterTransition'))
 					break;
 				case 'right':
 					this.back.css({
@@ -1017,7 +1013,7 @@ $.widget('mgiulio.slideshow', {
 							this.duration, 
 							'linear'
 						)
-					).then(function() { self._afterTransition(); });
+					).then($.proxy(this, '_afterTransition'))
 					break;
 				default:
 			}
