@@ -26,6 +26,9 @@ body {
 #gui > fieldset {
 	padding: 3px;
 }
+#gui > fieldset > legend {
+	color: #e0e0e0;
+}
 #gui button {
 	padding: 2px;
 }
