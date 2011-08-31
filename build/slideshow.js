@@ -977,58 +977,57 @@ $.widget('mgiulio.slideshow', {
 			).done(function() {
 				self._afterTransition();
 			});
+		},
+		'slide': function(dir) {
+			var self = this;
+			switch (dir) {
+				case 'left':
+					this.back.css({
+						left: this.frameWidth + 'px',
+					});
+					
+					$.when(
+						this.front.animate(
+							{left: -this.frameWidth + 'px'}, 
+							this.duration, 
+							'linear'
+						),
+						this.back.animate(
+							{left: 0}, 
+							this.duration, 
+							'linear'
+						)
+					).then(function() { self._afterTransition(); });
+					break;
+				case 'right':
+					this.back.css({
+						left: -this.frameWidth + 'px',
+					});
+					
+					$.when(
+						this.front.animate(
+							{left: this.frameWidth + 'px'}, 
+							this.duration, 
+							'linear'
+						),
+						this.back.animate(
+							{left: 0}, 
+							this.duration, 
+							'linear'
+						)
+					).then(function() { self._afterTransition(); });
+					break;
+				default:
+			}
+		},
+		'slide left': function() {
+			this.transitions['slide'].call(this, 'left');
+		},
+		'slide right': function() {
+			this.transitions['slide'].call(this, 'right');
 		}
 	}
 });
-
-/* transitions['slide'] = function(dir) {
-	var
-		front = buff[visibleBuff],
-		back = buff[1-visibleBuff],
-		duration = 1000
-	;
-	
-	switch (dir) {
-		case 'left':
-			back.css({
-				left: frameWidth + 'px',
-			});
-			
-			$.when(
-				front.animate(
-					{left: -frameWidth + 'px'}, 
-					duration, 
-					'linear'
-				),
-				back.animate(
-					{left: 0}, 
-					duration, 
-					'linear'
-				)
-			).then(transitions._afterTransition());
-			break;
-		case 'right':
-			back.css({
-				left: -frameWidth + 'px',
-			});
-			
-			$.when(
-				front.animate(
-					{left: frameWidth + 'px'}, 
-					duration, 
-					'linear'
-				),
-				back.animate(
-					{left: 0}, 
-					duration, 
-					'linear'
-				)
-			).then(transitions._afterTransition());
-			break;
-		default:
-	}
-}; */
-	
 
 
 /* transitions.none = function() {

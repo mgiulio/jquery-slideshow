@@ -23,9 +23,10 @@ $('#sliding-doors').delegate('button', 'click', function(e) {
 	ss.slideshow('play');
 });
 
-/* $('#slide').delegate('button', 'click', function(e) {
-	play('slide');
-}); */
+$('#slide').delegate('button', 'click', function(e) {
+	ss.slideshow('option', 'transition', 'slide ' + $(e.target).text());
+	ss.slideshow('play');
+});
 
 /* $('#none').click(function() {
 	play('none');
