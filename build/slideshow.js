@@ -722,6 +722,8 @@ $.support['transitionend'] = 'webkitTransitionEnd'; // FIXME
 //var ...	
 })(jQuery);
 
+(function($) {
+
 $.widget('mgiulio.slideshow', {
 	options: {
 		transition: 'sliding door left',
@@ -1031,3 +1033,5 @@ $.widget('mgiulio.slideshow', {
 		}
 	}
 });
+
+})(jQuery);
