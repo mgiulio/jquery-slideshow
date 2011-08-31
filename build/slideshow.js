@@ -1025,11 +1025,9 @@ $.widget('mgiulio.slideshow', {
 		},
 		'slide right': function() {
 			this.transitions['slide'].call(this, 'right');
+		},
+		'none': function() {
+			this._afterTransition();
 		}
 	}
 });
-
-
-/* transitions.none = function() {
-		this._afterTransition();
-}; */

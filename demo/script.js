@@ -28,10 +28,11 @@ $('#slide').delegate('button', 'click', function(e) {
 	ss.slideshow('play');
 });
 
-/* $('#none').click(function() {
-	play('none');
+$('#none').click(function() {
+	ss.slideshow('option', 'transition', 'none');
+	ss.slideshow('play');
 	return false;
-}); */
+});
 
 $('#cross-fade').click(function() {
 	ss.slideshow('option', 'transition', 'cross fade');
