@@ -1,17 +1,23 @@
 var
 	ss = $('#slideshow').slideshow(),
-	buttons = $('#gui button')
+	buttons = $('#frame button')
 ;
+
+$('#frame').delegate('button', 'click', function(e) {
+	buttons.attr('disabled', 'disabled');
+	e.stopPropagation();
+});
 		
 ss.bind('slideshowaftertransition', function() {
 	//transBtns.attr('disabled', '');
 	buttons.removeAttr('disabled');
 });
 
-$('#gui').delegate('button', 'click', function(e) {
-	buttons.attr('disabled', 'disabled');
-	e.stopPropagation();
+$('#frame #controls').delegate('button', 'click', function(e) {
+	ss.slideshow($(e.target).text().toLowerCase());
 });
+
+/* 
 
 $('#sliding-door').delegate('button', 'click', function(e) {
 	ss.slideshow('option', 'transition', 'sliding door ' + $(e.target).text());
@@ -37,4 +43,4 @@ $('#none').click(function() {
 $('#cross-fade').click(function() {
 	ss.slideshow('option', 'transition', 'cross fade');
 	ss.slideshow('next');
-});
+}); */

@@ -7,7 +7,7 @@ body {
 }
 #frame {
 	width: 960px;
-	height: 450px;
+	/* height: 450px; */
 	margin: 0 auto;
 	background-color: #444;
 	border: 2px solid #999;
@@ -26,6 +26,23 @@ body {
 	margin: 0 10px 10px 0;
 	border: 1px solid #aaa;
 	background-color: #000;
+}
+#frame legend {
+	color: #dddddd;
+	font-style: italic;
+}
+#frame #controls {
+	clear: left;
+	width: 50%;
+	margin: 0 auto;
+	text-align: center;
+}
+#frame #controls button {
+	padding: 5px;
+	background-color: #000;
+	color: orange;
+	border-radius: 5px;
+	margin: 5px;
 }
 #gui > fieldset {
 	padding: 3px;
