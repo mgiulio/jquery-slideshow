@@ -3,6 +3,25 @@ var
 	buttons = $('#frame #control button')
 ;
 
+(function() {
+	var
+		out = '',
+		transitions = ss.slideshow('getTransitions'),
+		numTransitions = transitions.length,
+		currTrans = ss.slideshow('option', 'transition'),
+		i = 0, 
+		tn
+	;
+	for (; i < numTransitions; ++i) {
+		tn = transitions[i];
+		out += '<li><label><input type="radio" name="curr-trans" value="' + 
+		tn + '"' + 
+		(tn === currTrans? ' checked="checked"' : '') + 
+		'>' + tn + '</label></li>';
+	}
+	$('#transitions').append(out);
+})();
+
 $('#frame #controls').delegate('button', 'click', function(e) {
 	buttons.attr('disabled', 'disabled');
 	ss.slideshow($(e.target).text().toLowerCase());

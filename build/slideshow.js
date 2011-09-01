@@ -802,7 +802,7 @@ $.widget('mgiulio.slideshow', {
 		this.back = this.buff[1-this.visibleBuff];
 		
 		this.back.attr('src', this.images[this.currImgIndex].src);
-		
+
 		this.transitions[this.options.transition].call(this);
 	},
 	_afterTransition: function() {
@@ -825,8 +825,16 @@ $.widget('mgiulio.slideshow', {
 		
 		this._trigger('afterTransition');
 	},
+	getTransitions: function() {
+		var t = [], k;
+		for (k in this.transitions)
+			if (this.transitions.hasOwnProperty(k) && k.charAt(0) !== '_')
+				t.push(k);
+		t.sort();
+		return t;
+	},
 	transitions: {
-		'sliding door': function(dir) {
+		'_sliding door': function(dir) {
 			var 
 				self = this,
 				prop = {},
@@ -882,18 +890,18 @@ $.widget('mgiulio.slideshow', {
 				);
 		},
 		'sliding door left': function() {
-			this.transitions['sliding door'].call(this, 'left');
+			this.transitions['_sliding door'].call(this, 'left');
 		},
 		'sliding door right': function() {
-			this.transitions['sliding door'].call(this, 'right');
+			this.transitions['_sliding door'].call(this, 'right');
 		},
 		'sliding door top': function() {
-			this.transitions['sliding door'].call(this, 'top');
+			this.transitions['_sliding door'].call(this, 'top');
 		},
 		'sliding door bottom': function() {
-			this.transitions['sliding door'].call(this, 'bottom');
+			this.transitions['_sliding door'].call(this, 'bottom');
 		},
-		'sliding doors': function(axis) {
+		'_sliding doors': function(axis) {
 			var 
 				self = this,
 				zIndex = this.front.css('zIndex'),
@@ -977,10 +985,10 @@ $.widget('mgiulio.slideshow', {
 			});
 		},
 		'sliding doors horizontal': function() {
-			this.transitions['sliding doors'].call(this, 'horizontal');
+			this.transitions['_sliding doors'].call(this, 'horizontal');
 		},
 		'sliding doors vertical': function() {
-			this.transitions['sliding doors'].call(this, 'vertical');
+			this.transitions['_sliding doors'].call(this, 'vertical');
 		},
 		'cross fade': function() {
 			$.when(
@@ -988,7 +996,7 @@ $.widget('mgiulio.slideshow', {
 				this.back.fadeIn(this.duration)
 			).done($.proxy(this, '_afterTransition'));
 		},
-		'slide': function(dir) {
+		'_slide': function(dir) {
 			switch (dir) {
 				case 'left':
 					this.back.css({
@@ -1030,10 +1038,10 @@ $.widget('mgiulio.slideshow', {
 			}
 		},
 		'slide left': function() {
-			this.transitions['slide'].call(this, 'left');
+			this.transitions['_slide'].call(this, 'left');
 		},
 		'slide right': function() {
-			this.transitions['slide'].call(this, 'right');
+			this.transitions['_slide'].call(this, 'right');
 		},
 		'none': function() {
 			this._afterTransition();
