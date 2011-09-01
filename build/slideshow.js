@@ -730,28 +730,28 @@ $.widget('mgiulio.slideshow', {
 		duration: 1000
 	},
 	_create: function() {
-		this.buff = [$(new Image()), $(new Image())];
-		this.backIndex = 1;
-		this.frontIndex = 2;
+		var 
+			count, 
+			img,
+			self = this
+		;
 		
-		this._preloadImages();
-	},
-	_preloadImages: function(done) {
-		var count, img, self = this;
+		this.buff = [$(new Image()), $(new Image())];
 		
 		this.images = this.element.find('img');
-		count = this.images.length;
 		
+		count = this.images.length;
 		this.images.each(function(index, element) {
 			img = new Image();
 			img.onload = function() {
-				if (--count === 0)
-					self._afterImagesLoaded();
+				if (--count === 0) {
+					self.buff[0].attr('src', self.images[0].src);
+					self.buff[1].attr('src', self.images[1].src);
+				}
 			};
 			img.src = element.src;
 		});
-	},
-	_afterImagesLoaded: function() {
+		
 		this.element.css({
 			position: 'relative',
 			overflow: 'hidden'
@@ -760,6 +760,9 @@ $.widget('mgiulio.slideshow', {
 		this.frameWidth = this.element.width();
 		this.frameHeight = this.element.height();
 		
+		this.backIndex = 1;
+		this.frontIndex = 2;
+		
 		this.buff[0]
 			.css({
 				position: 'absolute',
@@ -767,11 +770,8 @@ $.widget('mgiulio.slideshow', {
 				top: 0,
 				zIndex: this.backIndex
 			})
-			.attr('src', this.images[0].src)
-			//.width(frameWidth)
-			//.height(frameHeight)
-		;
-		
+			.appendTo(this.element);
+			
 		this.buff[1]
 			.css({
 				position: 'absolute',
@@ -779,18 +779,29 @@ $.widget('mgiulio.slideshow', {
 				top: 0,
 				zIndex: this.frontIndex
 			})
-			.attr('src', this.images[1].src)
-			//.width(frameWidth)
-			//.height(frameHeight)
-		;
-		
-		this.element.append(this.buff[0], this.buff[1]);
-		
+			.appendTo(this.element);
+			
 		this.visibleBuff = 1;
+		
+		this.currImgIndex = 0;
 	},
-	play: function() {
+	next: function() {
+		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
+		this.changeImage();
+	},
+	prev: function() {
+		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
+		this.changeImage();
+	},
+	goto: function(i) {
+		this.currImgIndex = i % this.images.length;
+		this.changeImage();
+	},
+	changeImage: function() {
 		this.front = this.buff[this.visibleBuff];
 		this.back = this.buff[1-this.visibleBuff];
+		
+		this.back.attr('src', this.images[this.currImgIndex].src);
 		
 		this.transitions[this.options.transition].call(this);
 	},

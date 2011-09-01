@@ -15,26 +15,26 @@ $('#gui').delegate('button', 'click', function(e) {
 
 $('#sliding-door').delegate('button', 'click', function(e) {
 	ss.slideshow('option', 'transition', 'sliding door ' + $(e.target).text());
-	ss.slideshow('play');
+	ss.slideshow('next');
 });
 
 $('#sliding-doors').delegate('button', 'click', function(e) {
 	ss.slideshow('option', 'transition', 'sliding doors ' + $(e.target).text());
-	ss.slideshow('play');
+	ss.slideshow('next');
 });
 
 $('#slide').delegate('button', 'click', function(e) {
 	ss.slideshow('option', 'transition', 'slide ' + $(e.target).text());
-	ss.slideshow('play');
+	ss.slideshow('next');
 });
 
 $('#none').click(function() {
 	ss.slideshow('option', 'transition', 'none');
-	ss.slideshow('play');
+	ss.slideshow('next');
 	return false;
 });
 
 $('#cross-fade').click(function() {
 	ss.slideshow('option', 'transition', 'cross fade');
-	ss.slideshow('play');
+	ss.slideshow('next');
 });
