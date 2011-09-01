@@ -1,10 +1,11 @@
 var
 	ss = $('#slideshow').slideshow(),
-	buttons = $('#frame button')
+	buttons = $('#frame #control button')
 ;
 
-$('#frame').delegate('button', 'click', function(e) {
+$('#frame #controls').delegate('button', 'click', function(e) {
 	buttons.attr('disabled', 'disabled');
+	ss.slideshow($(e.target).text().toLowerCase());
 	e.stopPropagation();
 });
 		
@@ -13,8 +14,8 @@ ss.bind('slideshowaftertransition', function() {
 	buttons.removeAttr('disabled');
 });
 
-$('#frame #controls').delegate('button', 'click', function(e) {
-	ss.slideshow($(e.target).text().toLowerCase());
+$('#frame #transitions').delegate('input', 'click', function(e) {
+	ss.slideshow('option', 'transition', e.target.value.toLowerCase());
 });
 
 /* 

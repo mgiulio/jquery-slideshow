@@ -27,9 +27,8 @@ body {
 	border: 1px solid #aaa;
 	background-color: #000;
 }
-#frame legend {
+#frame label {
 	color: #dddddd;
-	font-style: italic;
 }
 #frame #controls {
 	clear: left;
@@ -44,24 +43,9 @@ body {
 	border-radius: 5px;
 	margin: 5px;
 }
-#gui > fieldset {
-	padding: 3px;
+#frame #transitions input {
+	margin-right: 5px;
 }
-#gui > fieldset > legend {
-	color: #e0e0e0;
-}
-#gui button {
-	padding: 2px;
-}
-/*
-button.transition {
-	background-color: #000;
-	color: orange;
-	font-weight: bold;
-	font-family: monospace;
-	border-radius: 5px;
-}
-*/
 a {
 	color: #ffa500;
 	text-decoration: none;
