@@ -787,17 +787,17 @@ $.widget('mgiulio.slideshow', {
 	},
 	next: function() {
 		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
-		this.changeImage();
+		this._changeImage();
 	},
 	prev: function() {
 		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
-		this.changeImage();
+		this._changeImage();
 	},
 	goto: function(i) {
 		this.currImgIndex = i % this.images.length;
-		this.changeImage();
+		this._changeImage();
 	},
-	changeImage: function() {
+	_changeImage: function() {
 		this.front = this.buff[this.visibleBuff];
 		this.back = this.buff[1-this.visibleBuff];
 		
