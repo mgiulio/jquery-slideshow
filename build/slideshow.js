@@ -803,7 +803,7 @@ $.widget('mgiulio.slideshow', {
 		
 		this.back.attr('src', this.images[this.currImgIndex].src);
 
-		this.transitions[this.options.transition].call(this);
+		this._transitions[this.options.transition].call(this);
 	},
 	_afterTransition: function() {
 		// Adjust the new front buffer
@@ -827,13 +827,13 @@ $.widget('mgiulio.slideshow', {
 	},
 	getTransitions: function() {
 		var t = [], k;
-		for (k in this.transitions)
-			if (this.transitions.hasOwnProperty(k) && k.charAt(0) !== '_')
+		for (k in this._transitions)
+			if (this._transitions.hasOwnProperty(k) && k.charAt(0) !== '_')
 				t.push(k);
 		t.sort();
 		return t;
 	},
-	transitions: {
+	_transitions: {
 		'_sliding door': function(dir) {
 			var 
 				self = this,
@@ -890,16 +890,16 @@ $.widget('mgiulio.slideshow', {
 				);
 		},
 		'sliding door left': function() {
-			this.transitions['_sliding door'].call(this, 'left');
+			this._transitions['_sliding door'].call(this, 'left');
 		},
 		'sliding door right': function() {
-			this.transitions['_sliding door'].call(this, 'right');
+			this._transitions['_sliding door'].call(this, 'right');
 		},
 		'sliding door top': function() {
-			this.transitions['_sliding door'].call(this, 'top');
+			this._transitions['_sliding door'].call(this, 'top');
 		},
 		'sliding door bottom': function() {
-			this.transitions['_sliding door'].call(this, 'bottom');
+			this._transitions['_sliding door'].call(this, 'bottom');
 		},
 		'_sliding doors': function(axis) {
 			var 
@@ -985,10 +985,10 @@ $.widget('mgiulio.slideshow', {
 			});
 		},
 		'sliding doors horizontal': function() {
-			this.transitions['_sliding doors'].call(this, 'horizontal');
+			this._transitions['_sliding doors'].call(this, 'horizontal');
 		},
 		'sliding doors vertical': function() {
-			this.transitions['_sliding doors'].call(this, 'vertical');
+			this._transitions['_sliding doors'].call(this, 'vertical');
 		},
 		'cross fade': function() {
 			$.when(
@@ -1038,10 +1038,10 @@ $.widget('mgiulio.slideshow', {
 			}
 		},
 		'slide left': function() {
-			this.transitions['_slide'].call(this, 'left');
+			this._transitions['_slide'].call(this, 'left');
 		},
 		'slide right': function() {
-			this.transitions['_slide'].call(this, 'right');
+			this._transitions['_slide'].call(this, 'right');
 		},
 		'none': function() {
 			this._afterTransition();
