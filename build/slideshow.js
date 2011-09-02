@@ -740,18 +740,6 @@ $.widget('mgiulio.slideshow', {
 		
 		this.images = this.element.find('img');
 		
-		count = this.images.length;
-		this.images.each(function(index, element) {
-			img = new Image();
-			img.onload = function() {
-				if (--count === 0) {
-					self.buff[0].attr('src', self.images[0].src);
-					self.buff[1].attr('src', self.images[1].src);
-				}
-			};
-			img.src = element.src;
-		});
-		
 		this.element.css({
 			position: 'relative',
 			overflow: 'hidden'
@@ -779,6 +767,7 @@ $.widget('mgiulio.slideshow', {
 				top: 0,
 				zIndex: this.frontIndex
 			})
+			.attr('src', this.images[0].src)
 			.appendTo(this.element);
 			
 		this.visibleBuff = 1;
