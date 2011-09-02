@@ -981,8 +981,8 @@ $.widget('mgiulio.slideshow', {
 		},
 		'cross fade': function() {
 			$.when(
-				this.front.fadeOut(this.duration),
-				this.back.fadeIn(this.duration)
+				this.front.fadeOut(this.options.duration),
+				this.back.fadeIn(this.options.duration)
 			).done($.proxy(this, '_afterTransition'));
 		},
 		'_slide': function(dir) {
@@ -995,12 +995,12 @@ $.widget('mgiulio.slideshow', {
 					$.when(
 						this.front.animate(
 							{left: -this.frameWidth + 'px'}, 
-							this.duration, 
+							this.options.duration, 
 							'linear'
 						),
 						this.back.animate(
 							{left: 0}, 
-							this.duration, 
+							this.options.duration, 
 							'linear'
 						)
 					).then($.proxy(this, '_afterTransition'))
@@ -1013,12 +1013,12 @@ $.widget('mgiulio.slideshow', {
 					$.when(
 						this.front.animate(
 							{left: this.frameWidth + 'px'}, 
-							this.duration, 
+							this.options.duration, 
 							'linear'
 						),
 						this.back.animate(
 							{left: 0}, 
-							this.duration, 
+							this.options.duration, 
 							'linear'
 						)
 					).then($.proxy(this, '_afterTransition'))
