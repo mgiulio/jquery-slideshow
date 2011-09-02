@@ -1,7 +1,7 @@
 var
 	ssElem = $('#slideshow'),
 	ssInstance = ssElem.slideshow().data('slideshow'),
-	buttons = $('#frame #control button')
+	enableDisable = $('#frame button')
 ;
 
 (function() {
@@ -24,15 +24,17 @@ var
 	$('#transitions').append(out);
 })();
 
+enableDisable = enableDisable.add('#frame input[type="radio"]');
+
 $('#frame #controls').delegate('button', 'click', function(e) {
-	buttons.attr('disabled', 'disabled');
+	enableDisable.attr('disabled', 'disabled');
 	ssInstance[$(e.target).text().toLowerCase()]();
 	e.stopPropagation();
 });
 		
 ssElem.bind('slideshowaftertransition', function() {
 	//transBtns.attr('disabled', '');
-	buttons.removeAttr('disabled');
+	enableDisable.removeAttr('disabled');
 });
 
 $('#frame #transitions').delegate('input', 'click', function(e) {
