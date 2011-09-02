@@ -785,7 +785,8 @@ $.widget('mgiulio.slideshow', {
 		this._changeImage();
 	},
 	goto: function(i) {
-		this.currImgIndex = i % this.images.length;
+		if (this.currImgIndex >= this.images.length)
+			this.currImgIndex = this.currImgIndex % this.images.length;
 		this._changeImage();
 	},
 	_changeImage: function() {
