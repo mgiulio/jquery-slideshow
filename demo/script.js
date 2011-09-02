@@ -1,14 +1,15 @@
 var
-	ss = $('#slideshow').slideshow(),
+	ssElem = $('#slideshow'),
+	ssInstance = ssElem.slideshow().data('slideshow'),
 	buttons = $('#frame #control button')
 ;
 
 (function() {
 	var
 		out = '',
-		transitions = ss.slideshow('getTransitions'),
+		transitions = ssInstance.getTransitions(),
 		numTransitions = transitions.length,
-		currTrans = ss.slideshow('option', 'transition'),
+		currTrans = ssInstance.option('transition'),
 		i = 0, 
 		tn
 	;
@@ -25,16 +26,15 @@ var
 
 $('#frame #controls').delegate('button', 'click', function(e) {
 	buttons.attr('disabled', 'disabled');
-	ss.slideshow($(e.target).text().toLowerCase());
+	ssInstance[$(e.target).text().toLowerCase()]();
 	e.stopPropagation();
 });
 		
-ss.bind('slideshowaftertransition', function() {
+ssElem.bind('slideshowaftertransition', function() {
 	//transBtns.attr('disabled', '');
 	buttons.removeAttr('disabled');
 });
 
 $('#frame #transitions').delegate('input', 'click', function(e) {
-	ss.slideshow('option', 'transition', e.target.value.toLowerCase());
+	ssInstance.option('transition', e.target.value.toLowerCase());
 });
-
