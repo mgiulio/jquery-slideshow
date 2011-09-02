@@ -775,11 +775,13 @@ $.widget('mgiulio.slideshow', {
 		this.currImgIndex = 0;
 	},
 	next: function() {
-		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
+		if (++this.currImgIndex === this.images.length)
+			this.currImgIndex = 0;
 		this._changeImage();
 	},
 	prev: function() {
-		this.currImgIndex = (this.currImgIndex + 1) % this.images.length;
+		if (--this.currImgIndex < 0)
+			this.currImgIndex = this.images.length - 1;
 		this._changeImage();
 	},
 	goto: function(i) {
