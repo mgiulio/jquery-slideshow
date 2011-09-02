@@ -727,7 +727,8 @@ $.support['transitionend'] = 'webkitTransitionEnd'; // FIXME
 $.widget('mgiulio.slideshow', {
 	options: {
 		transition: 'sliding door left',
-		duration: 1000
+		duration: 1000,
+		current: 0
 	},
 	_create: function() {
 		var 
@@ -751,6 +752,7 @@ $.widget('mgiulio.slideshow', {
 		this.backIndex = 1;
 		this.frontIndex = 2;
 		
+		var buffElem = $('<div class="buffer"></div>').appendTo(this.element);
 		this.buff[0]
 			.css({
 				position: 'absolute',
@@ -758,7 +760,7 @@ $.widget('mgiulio.slideshow', {
 				top: 0,
 				zIndex: this.backIndex
 			})
-			.appendTo(this.element);
+			.appendTo(buffElem);
 			
 		this.buff[1]
 			.css({
@@ -767,33 +769,34 @@ $.widget('mgiulio.slideshow', {
 				top: 0,
 				zIndex: this.frontIndex
 			})
-			.attr('src', this.images[0].src)
-			.appendTo(this.element);
+			.attr('src', this.images[this.options.current].src)
+			.appendTo(buffElem);
 			
 		this.visibleBuff = 1;
 		
-		this.currImgIndex = 0;
+		this._trigger('newimage', null, {imageIndex: this.options.current});
 	},
 	next: function() {
-		if (++this.currImgIndex === this.images.length)
-			this.currImgIndex = 0;
+		if (++this.options.current === this.images.length)
+			this.options.current = 0;
 		this._changeImage();
 	},
 	prev: function() {
-		if (--this.currImgIndex < 0)
-			this.currImgIndex = this.images.length - 1;
+		if (--this.options.current < 0)
+			this.options.current = this.images.length - 1;
 		this._changeImage();
 	},
 	goto: function(i) {
-		if (this.currImgIndex >= this.images.length)
-			this.currImgIndex = this.currImgIndex % this.images.length;
+		this.options.current = i;
+		if (this.options.current >= this.images.length)
+			this.options.current = this.options.current % this.images.length;
 		this._changeImage();
 	},
 	_changeImage: function() {
 		this.front = this.buff[this.visibleBuff];
 		this.back = this.buff[1-this.visibleBuff];
 		
-		this.back.attr('src', this.images[this.currImgIndex].src);
+		this.back.attr('src', this.images[this.options.current].src);
 
 		this._transitions[this.options.transition].call(this);
 	},
@@ -815,7 +818,7 @@ $.widget('mgiulio.slideshow', {
 		
 		this.visibleBuff = 1 - this.visibleBuff;
 		
-		this._trigger('afterTransition');
+		this._trigger('newimage', null, {imageIndex: this.options.current});
 	},
 	getTransitions: function() {
 		var t = [], k;

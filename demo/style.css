@@ -30,18 +30,26 @@ body {
 #frame label {
 	color: #dddddd;
 }
-#frame #controls {
+#frame #prev-next {
 	clear: left;
 	width: 50%;
 	margin: 0 auto;
 	text-align: center;
 }
-#frame #controls button {
+#frame #prev-next button {
 	padding: 5px;
 	background-color: #000;
 	color: orange;
 	border-radius: 5px;
 	margin: 5px;
+}
+#frame #goto {
+	width: 50%;
+	margin: 0 auto;
+	text-align: center;
+}
+#frame #goto input {
+	margin-right: 5px;
 }
 #frame #transitions input {
 	margin-right: 5px;
