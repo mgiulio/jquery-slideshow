@@ -14,10 +14,11 @@ var
 	;
 	for (; i < numTransitions; ++i) {
 		tn = transitions[i];
-		out += '<li><label><input type="radio" name="curr-trans" value="' + 
+		out += '<li><input type="radio" name="curr-trans" id="' + tn + '" value="' + 
 		tn + '"' + 
 		(tn === currTrans? ' checked="checked"' : '') + 
-		'>' + tn + '</label></li>';
+		'>' +
+		'<label for="' + tn + '">' + tn + '</label></li>';
 	}
 	$('#transitions').append(out);
 })();
