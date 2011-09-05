@@ -29,6 +29,8 @@ body {
 }
 #frame label {
 	color: #dddddd;
+	font-family: Helvetica, Arial, Sans-Serif;
+	font-size: 80%;
 }
 #frame #prev-next {
 	clear: left;
