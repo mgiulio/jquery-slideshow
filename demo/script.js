@@ -27,6 +27,7 @@ var
 		.append(out)
 		.delegate('input', 'click', function(e) {
 			ssInstance.option('transition', e.target.value.toLowerCase());
+			e.stopPropagation();
 		});
 	
 	enableDisable = enableDisable.add('#frame input[type="radio"]');
@@ -48,6 +49,7 @@ var
 		.delegate('input', 'change', function(e) {
 			enableDisable.attr('disabled', 'disabled');
 			ssInstance.option('current', e.target.value);
+			e.stopPropagation();
 		});
 	
 	enableDisable = enableDisable.add('#frame #goto input[type="radio"]');
@@ -60,7 +62,6 @@ $('#frame #controls').delegate('button', 'click', function(e) {
 	enableDisable.attr('disabled', 'disabled');
 	ssInstance[$(e.target).text().toLowerCase()]();
 	e.stopPropagation();
-	e.preventDefault();
 });
 
 ssElem.bind('slideshownewimage', function(e, data) {
