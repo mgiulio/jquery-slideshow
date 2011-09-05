@@ -33,15 +33,51 @@ body {
 #frame #prev-next {
 	clear: left;
 	width: 50%;
-	margin: 0 auto;
+	margin: 10px auto;
 	text-align: center;
 }
 #frame #prev-next button {
-	padding: 5px;
+	/* padding: 5px;
 	background-color: #000;
 	color: orange;
 	border-radius: 5px;
-	margin: 5px;
+	margin: 5px; */
+	
+	border: none;
+	
+	border-top: 1px solid #81888c;
+   background: #020405;
+   background: -webkit-gradient(linear, left top, left bottom, from(#5a5c54), to(#020405));
+   background: -webkit-linear-gradient(top, #5a5c54, #020405);
+   background: -moz-linear-gradient(top, #5a5c54, #020405);
+   background: -ms-linear-gradient(top, #5a5c54, #020405);
+   background: -o-linear-gradient(top, #5a5c54, #020405);
+   padding: 6.5px 13px;
+   -webkit-border-radius: 6px;
+   -moz-border-radius: 6px;
+   border-radius: 6px;
+   -webkit-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   -moz-box-shadow: rgba(0,0,0,1) 0 1px 0;
+   box-shadow: rgba(0,0,0,1) 0 1px 0;
+   text-shadow: rgba(0,0,0,.4) 0 1px 0;
+   color: #eda005;
+   font-size: 14px;
+   font-family: Helvetica, Arial, Sans-Serif;
+   text-decoration: none;
+   vertical-align: middle;
+}
+#frame #prev-next button:hover {
+	border-top-color: #282a2b;
+   background: #282a2b;
+   color: #fff200;
+}
+#frame #prev-next button:active {
+   border-top-color: #5d5f61;
+   background: #5d5f61;
+}
+#frame #prev-next button:disabled {
+   background: #444444;
+	color: #aaaa00;
 }
 #frame #goto {
 	width: 50%;

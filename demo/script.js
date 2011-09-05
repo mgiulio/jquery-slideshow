@@ -45,7 +45,8 @@ var
 		
 	$('#goto')
 		.append(out)
-		.delegate('input', 'click', function(e) {
+		.delegate('input', 'change', function(e) {
+			enableDisable.attr('disabled', 'disabled');
 			ssInstance.option('current', e.target.value);
 		});
 	
@@ -59,6 +60,7 @@ $('#frame #controls').delegate('button', 'click', function(e) {
 	enableDisable.attr('disabled', 'disabled');
 	ssInstance[$(e.target).text().toLowerCase()]();
 	e.stopPropagation();
+	e.preventDefault();
 });
 
 ssElem.bind('slideshownewimage', function(e, data) {

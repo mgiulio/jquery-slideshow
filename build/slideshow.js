@@ -790,18 +790,19 @@ $.widget('mgiulio.slideshow', {
 		var constrainedCurrent;
 		switch (key) {
 			case 'current':
-				console.log('validate current');
-				if (value >= 0)
-					constrainedCurrent = value % this.images.length;
-				else {
-					constrainedCurrent = 0;
+				if (value !== this.options.current) {
+					if (value >= 0)
+						constrainedCurrent = value % this.images.length;
+					else {
+						constrainedCurrent = 0;
+					}
+					this.options.current = constrainedCurrent;
+					this._changeImage();
 				}
-				this.options.current = constrainedCurrent;
-				this._changeImage();
 				return this;
 				break;
 			default:
-				return $.widget.prototype._setOption.call(this, key,value);
+				return $.Widget.prototype._setOption.call(this, key,value);
 		}
 	},
 	goto: function(i) {
