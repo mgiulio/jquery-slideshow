@@ -801,8 +801,12 @@ $.widget('mgiulio.slideshow', {
 				}
 				return this;
 				break;
+			case 'transition':
+				if (!(value in this._transitions))
+					throw 'jQuery Slideshow: Error: ' + value + ' transitions does not exist';
+				break;
 			default:
-				return $.Widget.prototype._setOption.call(this, key,value);
+				return this._super('_setOption', key, value);
 		}
 	},
 	goto: function(i) {
